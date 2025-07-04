@@ -1,0 +1,52 @@
+[project]
+name = "mcp-discord-server"
+version = "0.1.0"
+description = "An MCP server for Discord integrations with authentication and logging."
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
+dependencies = [
+    "fastmcp>=2.0.0", # Ensure you have FastMCP 2.0 or newer
+    "python-dotenv>=1.1.0",
+    "pydantic>=2.11.7",
+    "uvicorn[standard]>=0.29.0", # For running the HTTP server
+    "fastapi>=0.111.0", # FastAPI is used by FastMCP for HTTP transport
+    "discord.py>=2.3.2", # For Discord API integration
+    "aiohttp>=3.9.0", # For making HTTP requests to Discord API
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" } # Or Apache-2.0, as per FastMCP's license
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+# Add more pytest options as needed for test coverage, etc.
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
+fallback-version = "0.0.0"
+
+[tool.pyright]
+include = ["src", "tests"]
+exclude = ["**/node_modules", "**/__pycache__", ".venv", ".git", "dist"]
+pythonVersion = "3.10"
+typeCheckingMode = "basic"
+reportMissingImports = true
+reportMissingTypeStubs = false
+useLibraryCodeForTypes = true
+venvPath = "."
+venv = ".venv"
+
+[tool.ruff.lint]
+extend-select = ["I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "I001", "RUF013"]
+"server.py" = ["E402"] # Allow imports not at the top of the file for dotenv loading
